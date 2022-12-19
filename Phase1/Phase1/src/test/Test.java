@@ -136,7 +136,7 @@ public class Test {
 		
 		LUComboBox = new JComboBox();
 		LUComboBox.setBackground(new Color(255, 255, 255));
-		LUComboBox.setModel(new DefaultComboBoxModel(new String[] {"Doolittle", "Crout", "Cholesky"}));
+		LUComboBox.setModel(new DefaultComboBoxModel(new String[] {"Dolittle", "Crout", "Cholesky"}));
 		LUComboBox.setSelectedIndex(0);
 		LUComboBox.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		LUComboBox.setCursor(cursor);
@@ -173,7 +173,7 @@ public class Test {
 		});
 		methodComboBox.setBackground(new Color(255, 255, 255));
 		methodComboBox.setCursor(cursor);
-		methodComboBox.setFont(new Font("Segoe UI", Font.BOLD, 16));
+		methodComboBox.setFont(new Font("Tahoma", Font.BOLD, 16));
 		methodComboBox.setModel(new DefaultComboBoxModel(new String[] {"Gauss Elimination", "Gauss Jordan", "LU Decomposition", "Gauss Seidel", "Jacobi Iteration"}));
 		methodComboBox.setSelectedIndex(0);
 		methodComboBox.setBounds(293, 45, 242, 26);
@@ -201,7 +201,7 @@ public class Test {
 		button = new JButton("Solve");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				solve((String)methodComboBox.getSelectedItem(), (int)equationsSpinner.getValue());
+				solve((String)methodComboBox.getSelectedItem(), (int)equationsSpinner.getValue(), (String)LUComboBox.getSelectedItem());
 			}
 		});
 		button.setBackground(new Color(0, 128, 255));
@@ -288,16 +288,20 @@ public class Test {
 		}
 	}
 	
-	private void solve(String method, int n) {
+	private void solve(String method, int n, String LUType) {
 		double mat[][] = new double[n][n + 1];
+		double specialMat[][] = new double[n][n]; 
+		double b[] = new double[n];
 		int significantDigits = (int)PrecisionDigitsSpinner.getValue();
 		for(int i = 0; i < n; i++) {
 			for(int j = 0; j < n + 1; j++) {
 				mat[i][j] = Double.parseDouble(coef[i][j].getText());
+				if(j != n) specialMat[i][j] = Double.parseDouble(coef[i][j].getText()); 
+				if(j == n) b[i] = Double.parseDouble(coef[i][j].getText()); 
 			}
 		}
-		Solve obj = new Solve(method, mat, significantDigits);
 		t1 = System.currentTimeMillis();
+		Solve obj = new Solve(method, LUType, mat, specialMat, b, significantDigits);
 		double[] ans = obj.chooseMethod();
 		t2 = System.currentTimeMillis() - t1;
 		txtms.setText(Double.toString(t2)+"ms");
