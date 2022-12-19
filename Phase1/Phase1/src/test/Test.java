@@ -18,6 +18,8 @@ public class Test {
 	private JSpinner IterationsNumberSpinner, PrecisionDigitsSpinner;
 	private JButton button;
 	int x = 20, y = 280, width = 80, height = 20;
+	private JTextField txtms;
+	double t1,t2;
 
 	/**
 	 * Launch the application.
@@ -213,6 +215,18 @@ public class Test {
 		canvas.setBounds(0, 250, 1920, 2);
 		frame.getContentPane().add(canvas);
 		
+		JLabel lblNewLabel = new JLabel("RunTime");
+		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel.setBounds(619, 142, 88, 45);
+		frame.getContentPane().add(lblNewLabel);
+		
+		txtms = new JTextField();
+		txtms.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		txtms.setBounds(735, 155, 96, 19);
+		frame.getContentPane().add(txtms);
+		txtms.setColumns(10);
+		
 	}
 	
 	private void setBoxes(int n) {
@@ -283,7 +297,10 @@ public class Test {
 			}
 		}
 		Solve obj = new Solve(method, mat, significantDigits);
+		t1 = System.currentTimeMillis();
 		double[] ans = obj.chooseMethod();
+		t2 = System.currentTimeMillis() - t1;
+		txtms.setText(Double.toString(t2)+"ms");
 		new Solution(ans);
 	}
 }
