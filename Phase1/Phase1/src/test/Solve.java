@@ -49,7 +49,8 @@ public class Solve {
 						break;
 					}
 					case "Cholesky" : {
-						
+						Cholesky obj = new Cholesky(specialCoef, b, significantDigits);
+						ans = obj.Solve();
 						break;
 					}
 				}
