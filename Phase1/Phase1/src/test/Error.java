@@ -12,11 +12,13 @@ import javax.swing.JLabel;
 public class Error {
 	private JFrame frame;
 	private JLabel label1, label2;
+	private String Error;
 
 	/**
 	 * Create the frame.
 	 */
-	public Error() {
+	public Error(String Error) {
+		this.Error = Error;
 		initialize();
 	}
 	
@@ -38,13 +40,19 @@ public class Error {
 		button.setBackground(new Color(0, 128, 255));
 		button.setFont(new Font("Dialog", Font.BOLD, 20));
 		button.setBounds(170, 100, 60, 30);
-		
-		label1 = new JLabel("An error has occured on parsing the equations");
+		if(this.Error.equalsIgnoreCase("Error")) {
+			label1 = new JLabel("An error has occured on parsing the equations");
+			label2 = new JLabel("please recheck them and try again");
+		}else {
+			label1 = new JLabel("			The     equations     have     no     solution");
+			label2 = new JLabel("please recheck them and try again");
+		}
+		//label1 = new JLabel("An error has occured on parsing the equations");
 		label1.setBackground(new Color(0, 128, 255));
 		label1.setFont(new Font("Dialog", Font.BOLD, 14));
 		label1.setBounds(30, 20, 350, 42);
 		
-		label2 = new JLabel("please recheck them and try again");
+		//label2 = new JLabel("please recheck them and try again");
 		label2.setBackground(new Color(0, 128, 255));
 		label2.setFont(new Font("Dialog", Font.BOLD, 14));
 		label2.setBounds(70, 40, 300, 42);
