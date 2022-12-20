@@ -43,14 +43,16 @@ public class Error {
 		if(this.Error.equalsIgnoreCase("Error")) {
 			label1 = new JLabel("An error has occured on parsing the equations");
 			label2 = new JLabel("please recheck them and try again");
+			label1.setBounds(30, 20, 350, 42);
 		}else {
-			label1 = new JLabel("			The     equations     have     no     solution");
+			label1 = new JLabel("The   System   has   no   solution");
 			label2 = new JLabel("please recheck them and try again");
+			label1.setBounds(70, 20, 350, 42);
 		}
 		//label1 = new JLabel("An error has occured on parsing the equations");
 		label1.setBackground(new Color(0, 128, 255));
 		label1.setFont(new Font("Dialog", Font.BOLD, 14));
-		label1.setBounds(30, 20, 350, 42);
+		//label1.setBounds(30, 20, 350, 42);
 		
 		//label2 = new JLabel("please recheck them and try again");
 		label2.setBackground(new Color(0, 128, 255));
