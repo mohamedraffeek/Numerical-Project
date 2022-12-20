@@ -25,7 +25,6 @@ public class GaussJordan {
 			}
 		}
 	}
-
     private void scaling() {
         if(!enableScaling) {
             for(int i = 0; i < n; i++) {
@@ -65,7 +64,8 @@ public class GaussJordan {
     private void elimination() {
         for(int k = 0; k < n; k++) {
             partialPivoting(k);
-            for(int i = 0; i < n && i != k; i++) {
+            for(int i = 0; i < n; i++) {
+            	if(i == k) continue;
                 double multiplier = coef[i][k] / coef[k][k];
                 multiplier = precisionFinder.precision(multiplier, significantDigits);
                 for(int j = k; j < n + 1; j++) {
