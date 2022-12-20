@@ -352,7 +352,6 @@ public class Test {
 	}
 	
 	private void solve(String method, int n, String LUType) {
-		t1 = System.currentTimeMillis();
 		if(method == "Gauss Seidel" || method == "Jacobi Iteration"){
 			for(int i=0 ; i<n ;i++) {
 				iGuess[i]= Double.parseDouble(initialGuess[i].getText());
@@ -360,20 +359,33 @@ public class Test {
 			it = (int)IterationsNumberSpinner.getValue();
 		}
 		double mat[][] = new double[n][n + 1];
-		double specialMat[][] = new double[n][n]; 
+		double specialMat[][] = new double[n][n];
 		double b[] = new double[n];
+		String validateMat[][] = new String[n][n + 1];
 		int significantDigits = (int)PrecisionDigitsSpinner.getValue();
 		for(int i = 0; i < n; i++) {
 			for(int j = 0; j < n + 1; j++) {
-				mat[i][j] = Double.parseDouble(coef[i][j].getText());
-				if(j != n) specialMat[i][j] = Double.parseDouble(coef[i][j].getText()); 
-				if(j == n) b[i] = Double.parseDouble(coef[i][j].getText()); 
+				validateMat[i][j] = coef[i][j].getText();
+			}
+		}
+		ValidateMatrix validateMatrix = new ValidateMatrix(validateMat);
+		validateMat = validateMatrix.validate();
+		if(validateMat[0][0].equalsIgnoreCase("Error")) {
+			Error errorWindow = new Error(); 
+			return;
+		}
+		for(int i = 0; i < n; i++) {
+			for(int j = 0; j < n + 1; j++) {
+				mat[i][j] = Double.parseDouble(validateMat[i][j]);
+				if(j != n) specialMat[i][j] = Double.parseDouble(validateMat[i][j]); 
+				if(j == n) b[i] = Double.parseDouble(validateMat[i][j]); 
 			}
 		}
 		Solve obj = new Solve(method, LUType, mat, specialMat, b, significantDigits,iGuess, it);
+		t1 = System.currentTimeMillis();
 		double[] ans = obj.chooseMethod();
-		new Solution(ans);
 		t2 = System.currentTimeMillis() - t1;
+		new Solution(ans);
 		txtms.setText(Double.toString(t2)+"ms");
 	}
 }
