@@ -356,7 +356,13 @@ public class Test {
 				validateMat[i][j] = coef[i][j].getText();
 			}
 		}
-		ValidateMatrix validateMatrix = new ValidateMatrix(validateMat);
+		ValidateMatrix validateMatrix;
+		if(method == "Gauss Seidel" || method == "Jacobi Iteration") {
+			 validateMatrix = new ValidateMatrix(validateMat,true);
+		}else {
+			 validateMatrix = new ValidateMatrix(validateMat,false);
+		}
+		//ValidateMatrix validateMatrix = new ValidateMatrix(validateMat);
 		validateMat = validateMatrix.validate();
 		if(validateMat[0][0].equalsIgnoreCase("Error")) {
 			Error errorWindow = new Error("Error"); 
