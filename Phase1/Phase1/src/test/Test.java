@@ -27,6 +27,7 @@ public class Test {
 	private JTextField txtms;
 	double t1,t2;
 	private JLabel lblNewLabel_1;
+	JCheckBox chckbxNewCheckBox;
 	double[] iGuess = new double[10];
 	int it ;
 	int x = 20, y = 280, width = 80, height = 20;
@@ -117,6 +118,12 @@ public class Test {
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.LEFT);
 		lblNewLabel_1.setBounds(20, 171, 198, 26);
 		frame.getContentPane().add(lblNewLabel_1);
+		
+		chckbxNewCheckBox = new JCheckBox("Enable Scaling");
+		chckbxNewCheckBox.setBackground(new Color(193, 255, 255));
+		chckbxNewCheckBox.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		chckbxNewCheckBox.setBounds(217, 126, 144, 38);
+		frame.getContentPane().add(chckbxNewCheckBox);
 		//
 		
 		ErrorText = new JLabel("Choose the absolute relative error");
@@ -219,33 +226,33 @@ public class Test {
 		
 		PrecisionText = new JLabel("Choose the Precision");
 		PrecisionText.setFont(new Font("Tahoma", Font.BOLD, 14));
-		PrecisionText.setBounds(293, 110, 242, 26);
+		PrecisionText.setBounds(514, 106, 242, 26);
 		frame.getContentPane().add(PrecisionText);
 		PrecisionText.setVisible(true);
 		
 		PrecisionDigitsSpinner = new JSpinner();
 		PrecisionDigitsSpinner.setModel(new SpinnerNumberModel(1, 1, 16, 1));
 		PrecisionDigitsSpinner.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		PrecisionDigitsSpinner.setBounds(293, 132, 50, 26);
+		PrecisionDigitsSpinner.setBounds(514, 132, 50, 26);
 		frame.getContentPane().add(PrecisionDigitsSpinner);
 		PrecisionDigitsSpinner.setVisible(true);
 		
 		DigitsLabel = new JLabel("Digits");
 		DigitsLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		DigitsLabel.setBounds(348, 132, 68, 26);
+		DigitsLabel.setBounds(574, 131, 68, 26);
 		DigitsLabel.setVisible(true);
 		frame.getContentPane().add(DigitsLabel);
 		
 		button = new JButton("Solve");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				solve((String)methodComboBox.getSelectedItem(), (int)equationsSpinner.getValue(), (String)LUComboBox.getSelectedItem());
+				solve((String)methodComboBox.getSelectedItem(), (int)equationsSpinner.getValue(), (String)LUComboBox.getSelectedItem(), chckbxNewCheckBox.isSelected());
 			}
 		});
 		button.setBackground(new Color(0, 128, 255));
 		button.setFont(new Font("Dialog", Font.BOLD, 30));
 		button.setCursor(cursor);
-		button.setBounds(1392, 8, 138, 63);
+		button.setBounds(1277, 11, 138, 63);
 		frame.getContentPane().add(button);
 		
 		Canvas canvas = new Canvas();
@@ -256,14 +263,15 @@ public class Test {
 		JLabel lblNewLabel = new JLabel("RunTime");
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setBounds(613, 122, 88, 45);
+		lblNewLabel.setBounds(802, 122, 88, 45);
 		frame.getContentPane().add(lblNewLabel);
 		
 		txtms = new JTextField();
 		txtms.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		txtms.setBounds(728, 135, 96, 19);
+		txtms.setBounds(899, 135, 96, 19);
 		frame.getContentPane().add(txtms);
 		txtms.setColumns(10);
+		
 		
 		setBoxes(2);
 		
@@ -351,7 +359,7 @@ public class Test {
 		}
 	}
 	
-	private void solve(String method, int n, String LUType) {
+	private void solve(String method, int n, String LUType, boolean enableScaling) {
 		if(method == "Gauss Seidel" || method == "Jacobi Iteration"){
 			for(int i=0 ; i<n ;i++) {
 				iGuess[i]= Double.parseDouble(initialGuess[i].getText());
@@ -381,7 +389,7 @@ public class Test {
 				if(j == n) b[i] = Double.parseDouble(validateMat[i][j]); 
 			}
 		}
-		Solve obj = new Solve(method, LUType, mat, specialMat, b, significantDigits,iGuess, it);
+		Solve obj = new Solve(method, LUType, mat, specialMat, b, significantDigits,iGuess, it, enableScaling);
 		t1 = System.currentTimeMillis();
 		double[] ans = obj.chooseMethod();
 		t2 = System.currentTimeMillis() - t1;

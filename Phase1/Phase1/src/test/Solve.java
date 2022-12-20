@@ -12,8 +12,9 @@ public class Solve {
 	int significantDigits;
 	double guess[];
 	int it;
+	boolean enableScaling;
 	
-	public Solve(String method, String LUType, double[][] coef, double[][] specialCoef, double[] b, int digits, double guess[], int it) {
+	public Solve(String method, String LUType, double[][] coef, double[][] specialCoef, double[] b, int digits, double guess[], int it, boolean enableScaling) {
 		this.method = method;
 		this.LUType = LUType;
 		this.coef = coef;
@@ -22,24 +23,25 @@ public class Solve {
 		this.significantDigits = digits;
 		this.guess = guess;
 		this.it = it;
+		this.enableScaling = enableScaling;
 	}
 	
 	public double[] chooseMethod() {
 		switch(method) {
 			case "Gauss Elimination" : {
-				GaussElimination obj = new GaussElimination(coef, true, significantDigits);
+				GaussElimination obj = new GaussElimination(coef, enableScaling, significantDigits);
 				ans = obj.solve();
 				break;
 			}
 			case "LU Decomposition" : {
 				switch (LUType) {
 					case "Dolittle" : {
-						DoolittleLU obj = new DoolittleLU(specialCoef, b, true, significantDigits);
+						DoolittleLU obj = new DoolittleLU(specialCoef, b, enableScaling, significantDigits);
 						ans = obj.Solve();
 						break;
 					}
 					case "Crout" : {
-						CroutDecomposition obj = new CroutDecomposition(coef, true, significantDigits);
+						CroutDecomposition obj = new CroutDecomposition(coef, enableScaling, significantDigits);
 						ans = obj.Solve();
 						break;
 					}
@@ -51,7 +53,7 @@ public class Solve {
 				break;
 			}
 			case "Gauss Jordan" : {
-				GaussJordan obj = new GaussJordan(coef, true, significantDigits);
+				GaussJordan obj = new GaussJordan(coef, enableScaling, significantDigits);
 				ans = obj.solve();
 				break;
 			}
