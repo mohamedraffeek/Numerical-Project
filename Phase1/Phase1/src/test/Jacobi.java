@@ -42,15 +42,17 @@ public class Jacobi {
     		if(i != 0) {
     			boolean LessThanRError = true;
     			for(int e=0 ; e<n ; e++) {
-    				if(Math.abs(ans[e]-temp[e]/ans[e]) < relativeE ){
+    				if(Math.abs(ans[e]-temp[e]/ans[e]) < 0.1 ){
     					LessThanRError = true;
     				}else {
     					LessThanRError = false;
     					break;
     				}
     			}
+    			System.out.println("tomam");
     			if(LessThanRError == true) {
     				iterationsDone = i;
+    				System.out.println("break");
     				break;
     			}
     		}
@@ -69,6 +71,7 @@ public class Jacobi {
     			ans[j]= sum/coef[j][j];
     			ans[j] = precisionFinder.precision(ans[j], significantDigits);
     		}
+    		iterationsDone = i+1;
     	}
     	return ans;
     }

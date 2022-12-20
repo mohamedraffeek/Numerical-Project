@@ -31,6 +31,7 @@ public class Test {
 	double[] iGuess = new double[10];
 	int it ;
 	int x = 20, y = 280, width = 80, height = 20;
+	private JTextField iterationsDone;
 
 	/**
 	 * Launch the application.
@@ -252,6 +253,16 @@ public class Test {
 		frame.getContentPane().add(txtms);
 		txtms.setColumns(10);
 		
+		JLabel lblNewLabel_2 = new JLabel("Number of iterations done");
+		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblNewLabel_2.setBounds(1029, 131, 233, 26);
+		frame.getContentPane().add(lblNewLabel_2);
+		
+		iterationsDone = new JTextField();
+		iterationsDone.setBounds(1287, 135, 96, 19);
+		frame.getContentPane().add(iterationsDone);
+		iterationsDone.setColumns(10);
+		
 		
 		setBoxes(2);
 		
@@ -357,6 +368,10 @@ public class Test {
 		t1 = System.currentTimeMillis();
 		double[] ans = obj.chooseMethod();
 		t2 = System.currentTimeMillis() - t1;
+		if(method == "Gauss Seidel" || method == "Jacobi Iteration") {
+			iterationsDone.setText(Integer.toString(obj.Iterations()));
+			//System.out.println(Integer.toString(obj.Iterations()));
+		}
 		new Solution(ans);
 		txtms.setText(Double.toString(t2)+"ms");
 	}

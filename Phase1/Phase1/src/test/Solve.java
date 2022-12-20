@@ -14,6 +14,7 @@ public class Solve {
 	int it;
 	double er;
 	boolean enableScaling;
+	int itDone;
 	
 	public Solve(String method, String LUType, double[][] coef, double[][] specialCoef, double[] b, int digits, double guess[], int it, double er,boolean enableScaling) {
 		this.method = method;
@@ -62,15 +63,20 @@ public class Solve {
 			case "Gauss Seidel" : {
 				GaussSeidel obj = new GaussSeidel(coef, it, significantDigits,guess, er);
 				ans = obj.solve();
+				itDone = obj.itDone();
 				break;
 			}
 			case "Jacobi Iteration" : {
 				Jacobi obj = new Jacobi(coef, it, significantDigits,guess, er);
 				ans = obj.solve();
+				itDone = obj.itDone();
 				break;
 			}
 		}
 		return ans;
+	}
+	public int Iterations() {
+		return itDone;
 	}
 
 }

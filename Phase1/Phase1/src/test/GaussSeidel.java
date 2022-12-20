@@ -71,6 +71,7 @@ public class GaussSeidel {
     			ans[j]= sum/coef[j][j];
     			ans[j] = precisionFinder.precision(ans[j], significantDigits);
     		}
+    		iterationsDone = i+1;
     	}
     	return ans;
     }
