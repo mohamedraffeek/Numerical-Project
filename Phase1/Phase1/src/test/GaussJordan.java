@@ -2,19 +2,29 @@ package test;
 
 public class GaussJordan {
 
-    int n;
+    int n, significantDigits;
     boolean enableScaling;
     double[][] coef;
     double[] scale;
     double[] ans;
+    precisionFinder precisionFinder = new precisionFinder();
 
-    public GaussJordan(double[][] ceof, boolean enableScaling) {
+    public GaussJordan(double[][] ceof, boolean enableScaling, int digits) {
         this.coef = ceof;
         this.enableScaling = enableScaling;
         this.n = coef.length;
+        this.significantDigits = digits;
         this.scale = new double[n];
         this.ans = new double[n];
     }
+    
+    private void significantDigits() {
+		for(int i = 0; i < n; ++i) {
+			for(int j = 0; j < n; ++j) {
+				coef[i][j] = precisionFinder.precision(coef[i][j], significantDigits);
+			}
+		}
+	}
 
     private void scaling() {
         if(!enableScaling) {
@@ -35,10 +45,12 @@ public class GaussJordan {
 
     private void partialPivoting(int k) {
         double pivot = Math.abs(coef[k][k] / scale[k]);
+        pivot = precisionFinder.precision(pivot, significantDigits);
         int pivotRow = k;
         for(int i = k + 1; i < n; i++) {
             if(Math.abs(coef[i][k] / scale[i]) > pivot) {
                 pivot = Math.abs(coef[i][k] / scale[i]);
+                pivot = precisionFinder.precision(pivot, significantDigits);
                 pivotRow = i;
             }
         }
@@ -55,8 +67,10 @@ public class GaussJordan {
             partialPivoting(k);
             for(int i = 0; i < n && i != k; i++) {
                 double multiplier = coef[i][k] / coef[k][k];
+                multiplier = precisionFinder.precision(multiplier, significantDigits);
                 for(int j = k; j < n + 1; j++) {
                     coef[i][j] = coef[i][j] - multiplier * coef[k][j];
+                    coef[i][j] = precisionFinder.precision(coef[i][j], significantDigits);
                 }
             }
         }
@@ -65,10 +79,12 @@ public class GaussJordan {
     private void substitution() {
         for(int i = 0; i < n; i++) {
             ans[i] = coef[i][n] / coef[i][i];
+            ans[i] = precisionFinder.precision(ans[i], significantDigits);
         }
     }
 
     public double[] solve() {
+    	significantDigits();
         scaling();
         elimination();
         substitution();

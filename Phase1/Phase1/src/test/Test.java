@@ -5,6 +5,8 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.event.*;
 import java.beans.PropertyChangeListener;
+import java.util.LinkedList;
+import java.util.Vector;
 import java.beans.PropertyChangeEvent;
 
 public class Test {
@@ -12,6 +14,11 @@ public class Test {
 	private JFrame frame;
 	private JTextField[][] coef = new JTextField[10][11];
 	private JLabel[][] labels = new JLabel[10][10];
+	//
+	private JTextField[] initialGuess = new JTextField[10];
+	private JLabel[] initialGuess_Label = new JLabel[10];
+	//
+	
 	private JTextField ErrorTextField;
 	private JLabel LUText, StoppingConditionText, IterationsNumberText, ErrorText, PrecisionText, DigitsLabel;
 	private JComboBox LUComboBox, StoppingConditionComboBox;
@@ -20,6 +27,8 @@ public class Test {
 	int x = 20, y = 280, width = 80, height = 20;
 	private JTextField txtms;
 	double t1,t2;
+	private JLabel lblNewLabel_1;
+	double[] iGuess = new double[10];
 
 	/**
 	 * Launch the application.
@@ -78,8 +87,31 @@ public class Test {
 			}
 			y += 50;
 		}
+		//
+		x = 20; y =220;
+		for(int i = 0; i < 10; i++) {			
+			initialGuess[i] = new JTextField();
+			initialGuess[i].setBackground(new Color(240, 240, 240));
+			initialGuess[i].setFont(new Font("Tahoma", Font.PLAIN, 18));
+			initialGuess[i].setText("0");
+			if(i==9) initialGuess[i].setBounds(x+51, y, width, height);
+			else initialGuess[i].setBounds(x+40, y, width, height);
+			initialGuess[i].setVisible(false);
+			frame.getContentPane().add(initialGuess[i]);
+			
+			initialGuess_Label[i] = new JLabel();
+			initialGuess_Label[i].setFont(new Font("Tahoma", Font.PLAIN, 20));
+			initialGuess_Label[i].setBounds(x , y, 70, height);
+			initialGuess_Label[i].setVisible(false);
+			frame.getContentPane().add(initialGuess_Label[i]);
+			x += 135;
+			
+			
+		}
+		//
 		
 		setBoxes(2);
+		setInitialGuess(2);
 		
 		ErrorText = new JLabel("Choose the absolute relative error");
 		ErrorText.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -136,7 +168,7 @@ public class Test {
 		
 		LUComboBox = new JComboBox();
 		LUComboBox.setBackground(new Color(255, 255, 255));
-		LUComboBox.setModel(new DefaultComboBoxModel(new String[] {"Doolittle", "Crout", "Cholesky"}));
+		LUComboBox.setModel(new DefaultComboBoxModel(new String[] {"Dolittle", "Crout", "Cholesky"}));
 		LUComboBox.setSelectedIndex(0);
 		LUComboBox.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		LUComboBox.setCursor(cursor);
@@ -154,6 +186,7 @@ public class Test {
 		equationsSpinner.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				setBoxes((int)equationsSpinner.getValue());
+				setInitialGuess((int)equationsSpinner.getValue());
 			}
 		});
 		equationsSpinner.setModel(new SpinnerNumberModel(2, 2, 10, 1));
@@ -201,13 +234,13 @@ public class Test {
 		button = new JButton("Solve");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				solve((String)methodComboBox.getSelectedItem(), (int)equationsSpinner.getValue());
+				solve((String)methodComboBox.getSelectedItem(), (int)equationsSpinner.getValue(), (String)LUComboBox.getSelectedItem());
 			}
 		});
 		button.setBackground(new Color(0, 128, 255));
 		button.setFont(new Font("Dialog", Font.BOLD, 30));
 		button.setCursor(cursor);
-		button.setBounds(1350, 11, 138, 63);
+		button.setBounds(1392, 8, 138, 63);
 		frame.getContentPane().add(button);
 		
 		Canvas canvas = new Canvas();
@@ -218,14 +251,20 @@ public class Test {
 		JLabel lblNewLabel = new JLabel("RunTime");
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setBounds(619, 142, 88, 45);
+		lblNewLabel.setBounds(613, 122, 88, 45);
 		frame.getContentPane().add(lblNewLabel);
 		
 		txtms = new JTextField();
 		txtms.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		txtms.setBounds(735, 155, 96, 19);
+		txtms.setBounds(728, 135, 96, 19);
 		frame.getContentPane().add(txtms);
 		txtms.setColumns(10);
+		
+		lblNewLabel_1 = new JLabel("Initial Guess");
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblNewLabel_1.setHorizontalAlignment(SwingConstants.LEFT);
+		lblNewLabel_1.setBounds(20, 171, 198, 26);
+		frame.getContentPane().add(lblNewLabel_1);
 		
 	}
 	
@@ -251,6 +290,24 @@ public class Test {
 			}
 		}
 	}
+	//
+	private void setInitialGuess(int n) {
+		for(int i = 0; i < 10; i++) {
+				if(i >= n ) {
+					initialGuess[i].setVisible(false);
+					initialGuess[i].setText("0");
+				}
+					initialGuess_Label[i].setText("");
+					initialGuess_Label[i].setVisible(false);
+		}
+		for(int i = 0; i < n; i++) {
+				initialGuess[i].setVisible(true);
+				initialGuess_Label[i].setText("X" + String.valueOf(i + 1)+"=");
+				initialGuess_Label[i].setVisible(true);
+			
+		}
+	}
+	//
 	
 	private void setMethod(String method) {
 		LUText.setVisible(false);
@@ -288,16 +345,25 @@ public class Test {
 		}
 	}
 	
-	private void solve(String method, int n) {
+	private void solve(String method, int n, String LUType) {
+		if(method == "Gauss Seidel" || method == "Jacobi Iteration"){
+			for(int i=0 ; i<n ;i++) {
+				iGuess[i]= Double.parseDouble(initialGuess[i].getText());
+			}
+		}
 		double mat[][] = new double[n][n + 1];
+		double specialMat[][] = new double[n][n]; 
+		double b[] = new double[n];
 		int significantDigits = (int)PrecisionDigitsSpinner.getValue();
 		for(int i = 0; i < n; i++) {
 			for(int j = 0; j < n + 1; j++) {
 				mat[i][j] = Double.parseDouble(coef[i][j].getText());
+				if(j != n) specialMat[i][j] = Double.parseDouble(coef[i][j].getText()); 
+				if(j == n) b[i] = Double.parseDouble(coef[i][j].getText()); 
 			}
 		}
-		Solve obj = new Solve(method, mat, significantDigits);
 		t1 = System.currentTimeMillis();
+		Solve obj = new Solve(method, LUType, mat, specialMat, b, significantDigits,iGuess);
 		double[] ans = obj.chooseMethod();
 		t2 = System.currentTimeMillis() - t1;
 		txtms.setText(Double.toString(t2)+"ms");
