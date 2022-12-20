@@ -57,7 +57,7 @@ public class Error {
 		//label2 = new JLabel("please recheck them and try again");
 		label2.setBackground(new Color(0, 128, 255));
 		label2.setFont(new Font("Dialog", Font.BOLD, 14));
-		label2.setBounds(70, 40, 300, 42);
+		label2.setBounds(70, 40, 300, 42); 
 		
 		frame.getContentPane().add(button);
 		frame.getContentPane().add(label1);
