@@ -20,12 +20,12 @@ public class Test {
 	//
 	
 	private JTextField ErrorTextField;
-	private JLabel LUText, StoppingConditionText, IterationsNumberText, ErrorText, PrecisionText, DigitsLabel;
-	private JComboBox LUComboBox, StoppingConditionComboBox;
+	private JLabel LUText, IterationsNumberText, ErrorText, PrecisionText, DigitsLabel, lblNewLabel_2;
+	private JComboBox LUComboBox;
 	private JSpinner IterationsNumberSpinner, PrecisionDigitsSpinner;
 	private JButton button;
-	private JTextField txtms;
-	double t1,t2;
+	private JTextField txtms, iterationsDone;
+	double t1,t2, er;
 	private JLabel lblNewLabel_1;
 	JCheckBox chckbxNewCheckBox;
 	double[] iGuess = new double[10];
@@ -124,11 +124,24 @@ public class Test {
 		chckbxNewCheckBox.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		chckbxNewCheckBox.setBounds(217, 126, 144, 38);
 		frame.getContentPane().add(chckbxNewCheckBox);
+		
+		lblNewLabel_2 = new JLabel("Iterations done");
+		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblNewLabel_2.setBounds(1078, 131, 144, 26);
+		frame.getContentPane().add(lblNewLabel_2);
+		lblNewLabel_2.setVisible(false);
+		
+		iterationsDone = new JTextField();
+		iterationsDone.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		iterationsDone.setBounds(1232, 130, 96, 29);
+		frame.getContentPane().add(iterationsDone);
+		iterationsDone.setColumns(10);
+		iterationsDone.setVisible(false);
 		//
 		
 		ErrorText = new JLabel("Choose the absolute relative error");
 		ErrorText.setFont(new Font("Tahoma", Font.BOLD, 14));
-		ErrorText.setBounds(837, 23, 242, 26);
+		ErrorText.setBounds(847, 23, 260, 26);
 		frame.getContentPane().add(ErrorText);
 		ErrorText.setVisible(false);
 		
@@ -136,42 +149,22 @@ public class Test {
 		ErrorTextField.setHorizontalAlignment(SwingConstants.RIGHT);
 		ErrorTextField.setText("0.0001");
 		ErrorTextField.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		ErrorTextField.setBounds(837, 45, 242, 26);
+		ErrorTextField.setBounds(847, 45, 242, 26);
 		frame.getContentPane().add(ErrorTextField);
 		ErrorTextField.setVisible(false);
 		
 		IterationsNumberText = new JLabel("Choose number of iterations");
 		IterationsNumberText.setFont(new Font("Tahoma", Font.BOLD, 14));
-		IterationsNumberText.setBounds(837, 23, 198, 26);
+		IterationsNumberText.setBounds(567, 23, 205, 26);
 		frame.getContentPane().add(IterationsNumberText);
 		IterationsNumberText.setVisible(false);
 		
 		IterationsNumberSpinner = new JSpinner();
 		IterationsNumberSpinner.setModel(new SpinnerNumberModel(1, 1, 100, 1));
 		IterationsNumberSpinner.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		IterationsNumberSpinner.setBounds(837, 45, 242, 26);
+		IterationsNumberSpinner.setBounds(567, 45, 242, 26);
 		frame.getContentPane().add(IterationsNumberSpinner);
 		IterationsNumberSpinner.setVisible(false);
-		
-		StoppingConditionText = new JLabel("Choose the stopping condition\r\n");
-		StoppingConditionText.setFont(new Font("Tahoma", Font.BOLD, 14));
-		StoppingConditionText.setBounds(567, 23, 223, 26);
-		frame.getContentPane().add(StoppingConditionText);
-		StoppingConditionText.setVisible(false);
-		
-		StoppingConditionComboBox = new JComboBox();
-		StoppingConditionComboBox.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				setStoppingCondition((String)StoppingConditionComboBox.getSelectedItem());
-			}
-		});
-		StoppingConditionComboBox.setModel(new DefaultComboBoxModel(new String[] {"Number of Iterations", "Absolute Relative Error"}));
-		StoppingConditionComboBox.setSelectedIndex(0);
-		StoppingConditionComboBox.setFont(new Font("Segoe UI", Font.BOLD, 16));
-		StoppingConditionComboBox.setCursor(cursor);
-		StoppingConditionComboBox.setBounds(567, 45, 242, 26);
-		frame.getContentPane().add(StoppingConditionComboBox);
-		StoppingConditionComboBox.setVisible(false);
 		
 		LUText = new JLabel("Choose the LU format\r\n");
 		LUText.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -268,10 +261,9 @@ public class Test {
 		
 		txtms = new JTextField();
 		txtms.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		txtms.setBounds(899, 135, 96, 19);
+		txtms.setBounds(900, 130, 96, 29);
 		frame.getContentPane().add(txtms);
 		txtms.setColumns(10);
-		
 		
 		setBoxes(2);
 		
@@ -298,7 +290,7 @@ public class Test {
 				if(j < n) labels[i][j].setVisible(true);
 			}
 		}
-		if(StoppingConditionText.isVisible()) setInitialGuess(n);
+		if(ErrorText.isVisible()) setInitialGuess(n);
 	}
 	//
 	private void setInitialGuess(int n) {
@@ -324,38 +316,25 @@ public class Test {
 	private void setMethod(String method, int n) {
 		LUText.setVisible(false);
 		LUComboBox.setVisible(false);
-		StoppingConditionText.setVisible(false);
-		StoppingConditionComboBox.setVisible(false);
 		IterationsNumberText.setVisible(false);
 		IterationsNumberSpinner.setVisible(false);
 		ErrorText.setVisible(false);
 		ErrorTextField.setVisible(false);
+		lblNewLabel_2.setVisible(false);
+		iterationsDone.setVisible(false);
 		setInitialGuess(0);
 		if(method == "LU Decomposition") {
 			LUText.setVisible(true);
 			LUComboBox.setVisible(true);
 		}
 		else if(method == "Gauss Seidel" || method == "Jacobi Iteration") {
-			StoppingConditionText.setVisible(true);
-			StoppingConditionComboBox.setVisible(true);
 			setInitialGuess(n);
-			setStoppingCondition((String)StoppingConditionComboBox.getSelectedItem());
-		}
-	}
-	
-	private void setStoppingCondition(String condition) {
-		IterationsNumberText.setVisible(false);
-		IterationsNumberSpinner.setVisible(false);
-		ErrorText.setVisible(false);
-		ErrorTextField.setVisible(false);
-		if(!StoppingConditionText.isVisible()) return;
-		if(condition == "Number of Iterations") {
 			IterationsNumberText.setVisible(true);
 			IterationsNumberSpinner.setVisible(true);
-		}
-		else if(condition == "Absolute Relative Error") {
 			ErrorText.setVisible(true);
 			ErrorTextField.setVisible(true);
+			lblNewLabel_2.setVisible(true);
+			iterationsDone.setVisible(true);
 		}
 	}
 	
@@ -365,6 +344,7 @@ public class Test {
 				iGuess[i]= Double.parseDouble(initialGuess[i].getText());
 			}
 			it = (int)IterationsNumberSpinner.getValue();
+			er = Double.parseDouble(ErrorTextField.getText());
 		}
 		double mat[][] = new double[n][n + 1];
 		double specialMat[][] = new double[n][n];
@@ -389,10 +369,13 @@ public class Test {
 				if(j == n) b[i] = Double.parseDouble(validateMat[i][j]); 
 			}
 		}
-		Solve obj = new Solve(method, LUType, mat, specialMat, b, significantDigits,iGuess, it, enableScaling);
+		Solve obj = new Solve(method, LUType, mat, specialMat, b, significantDigits,iGuess, it, er, enableScaling);
 		t1 = System.currentTimeMillis();
 		double[] ans = obj.chooseMethod();
 		t2 = System.currentTimeMillis() - t1;
+		if(method == "Gauss Seidel" || method == "Jacobi Iteration") {
+			iterationsDone.setText(Integer.toString(obj.Iterations()));
+		}
 		new Solution(ans);
 		txtms.setText(Double.toString(t2)+"ms");
 	}

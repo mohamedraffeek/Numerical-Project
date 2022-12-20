@@ -5,18 +5,21 @@ import java.util.Arrays;
 public class GaussSeidel {
 	int n, significantDigits;
     int iterations;
+    int iterationsDone;
     double[][] coef;
     double[] ans;
     double[] Guess;
+    double relativeE;
     precisionFinder precisionFinder = new precisionFinder();
     
-    public GaussSeidel(double[][] ceof , int iterations, int digits, double Guess[]) {
+    public GaussSeidel(double[][] ceof , int iterations, int digits, double Guess[], double relativeE) {
         this.coef = ceof;
         this.n = coef.length;
         this.significantDigits = digits;
         this.iterations = iterations;
         this.ans = new double[n];
         this.Guess = Guess;
+        this.relativeE = relativeE;
     }
     
     private void significantDigits() {
@@ -28,12 +31,35 @@ public class GaussSeidel {
 	}
     
     public double[] solve() {
+    	double[] temp = new double[n];
     	significantDigits();
     	for(int i=0; i<n ; i++) {
     		ans[i]=Guess[i];
     		ans[i] = precisionFinder.precision(ans[i], significantDigits);
+    		temp[i] = ans[i];
     	}
     	for(int i=0; i<iterations ; i++) {
+    		//
+    		if(i != 0) {
+    			boolean LessThanRError = true;
+    			for(int e=0 ; e<n ; e++) {
+    				if(Math.abs((ans[e]-temp[e])/ans[e]) < relativeE ){
+    					LessThanRError = true;
+    				}else {
+    					LessThanRError = false;
+    					break;
+    				}
+    			}
+    			if(LessThanRError == true) {
+    				iterationsDone = i;
+    				break;
+    			}
+    		}
+    		
+    		for(int f=0 ; f<n ; f++) {
+    			temp[f] = ans[f];
+    		}
+    		//
     		for(int j=0 ; j<n ;j++) {
     			double sum = coef[j][n];
     			for(int k=0 ; k<n ; k++) {
@@ -45,7 +71,11 @@ public class GaussSeidel {
     			ans[j]= sum/coef[j][j];
     			ans[j] = precisionFinder.precision(ans[j], significantDigits);
     		}
+    		iterationsDone = i+1;
     	}
     	return ans;
+    }
+    public int itDone() {
+    	return iterationsDone;
     }
 }
