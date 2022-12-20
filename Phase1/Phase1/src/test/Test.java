@@ -359,7 +359,11 @@ public class Test {
 		ValidateMatrix validateMatrix = new ValidateMatrix(validateMat);
 		validateMat = validateMatrix.validate();
 		if(validateMat[0][0].equalsIgnoreCase("Error")) {
-			Error errorWindow = new Error(); 
+			Error errorWindow = new Error("Error"); 
+			return;
+		}
+		if(validateMat[0][0].equalsIgnoreCase("Error1")) {
+			Error errorWindow = new Error("Error1"); 
 			return;
 		}
 		for(int i = 0; i < n; i++) {
