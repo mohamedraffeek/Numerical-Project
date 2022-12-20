@@ -20,18 +20,17 @@ public class Test {
 	//
 	
 	private JTextField ErrorTextField;
-	private JLabel LUText, IterationsNumberText, ErrorText, PrecisionText, DigitsLabel;
+	private JLabel LUText, IterationsNumberText, ErrorText, PrecisionText, DigitsLabel, lblNewLabel_2;
 	private JComboBox LUComboBox;
 	private JSpinner IterationsNumberSpinner, PrecisionDigitsSpinner;
 	private JButton button;
-	private JTextField txtms;
+	private JTextField txtms, iterationsDone;
 	double t1,t2, er;
 	private JLabel lblNewLabel_1;
 	JCheckBox chckbxNewCheckBox;
 	double[] iGuess = new double[10];
 	int it ;
 	int x = 20, y = 280, width = 80, height = 20;
-	private JTextField iterationsDone;
 
 	/**
 	 * Launch the application.
@@ -125,6 +124,19 @@ public class Test {
 		chckbxNewCheckBox.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		chckbxNewCheckBox.setBounds(217, 126, 144, 38);
 		frame.getContentPane().add(chckbxNewCheckBox);
+		
+		lblNewLabel_2 = new JLabel("Iterations done");
+		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblNewLabel_2.setBounds(1078, 131, 144, 26);
+		frame.getContentPane().add(lblNewLabel_2);
+		lblNewLabel_2.setVisible(false);
+		
+		iterationsDone = new JTextField();
+		iterationsDone.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		iterationsDone.setBounds(1232, 130, 96, 29);
+		frame.getContentPane().add(iterationsDone);
+		iterationsDone.setColumns(10);
+		iterationsDone.setVisible(false);
 		//
 		
 		ErrorText = new JLabel("Choose the absolute relative error");
@@ -253,18 +265,6 @@ public class Test {
 		frame.getContentPane().add(txtms);
 		txtms.setColumns(10);
 		
-		JLabel lblNewLabel_2 = new JLabel("Iterations done");
-		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblNewLabel_2.setBounds(1078, 131, 144, 26);
-		frame.getContentPane().add(lblNewLabel_2);
-		
-		iterationsDone = new JTextField();
-		iterationsDone.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		iterationsDone.setBounds(1232, 130, 96, 29);
-		frame.getContentPane().add(iterationsDone);
-		iterationsDone.setColumns(10);
-		
-		
 		setBoxes(2);
 		
 	}
@@ -320,6 +320,8 @@ public class Test {
 		IterationsNumberSpinner.setVisible(false);
 		ErrorText.setVisible(false);
 		ErrorTextField.setVisible(false);
+		lblNewLabel_2.setVisible(false);
+		iterationsDone.setVisible(false);
 		setInitialGuess(0);
 		if(method == "LU Decomposition") {
 			LUText.setVisible(true);
@@ -331,6 +333,8 @@ public class Test {
 			IterationsNumberSpinner.setVisible(true);
 			ErrorText.setVisible(true);
 			ErrorTextField.setVisible(true);
+			lblNewLabel_2.setVisible(true);
+			iterationsDone.setVisible(true);
 		}
 	}
 	
