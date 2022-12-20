@@ -24,12 +24,12 @@ public class Test {
 	private JComboBox LUComboBox, StoppingConditionComboBox;
 	private JSpinner IterationsNumberSpinner, PrecisionDigitsSpinner;
 	private JButton button;
-	int x = 20, y = 280, width = 80, height = 20;
 	private JTextField txtms;
 	double t1,t2;
 	private JLabel lblNewLabel_1;
 	double[] iGuess = new double[10];
 	int it ;
+	int x = 20, y = 280, width = 80, height = 20;
 
 	/**
 	 * Launch the application.
@@ -99,20 +99,25 @@ public class Test {
 			else initialGuess[i].setBounds(x+40, y, width, height);
 			initialGuess[i].setVisible(false);
 			frame.getContentPane().add(initialGuess[i]);
+			initialGuess[i].setVisible(false);
 			
 			initialGuess_Label[i] = new JLabel();
 			initialGuess_Label[i].setFont(new Font("Tahoma", Font.PLAIN, 20));
 			initialGuess_Label[i].setBounds(x , y, 70, height);
 			initialGuess_Label[i].setVisible(false);
 			frame.getContentPane().add(initialGuess_Label[i]);
+			initialGuess_Label[i].setVisible(false);
 			x += 135;
 			
 			
 		}
-		//
 		
-		setBoxes(2);
-		setInitialGuess(2);
+		lblNewLabel_1 = new JLabel("Initial Guess");
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblNewLabel_1.setHorizontalAlignment(SwingConstants.LEFT);
+		lblNewLabel_1.setBounds(20, 171, 198, 26);
+		frame.getContentPane().add(lblNewLabel_1);
+		//
 		
 		ErrorText = new JLabel("Choose the absolute relative error");
 		ErrorText.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -187,7 +192,6 @@ public class Test {
 		equationsSpinner.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				setBoxes((int)equationsSpinner.getValue());
-				setInitialGuess((int)equationsSpinner.getValue());
 			}
 		});
 		equationsSpinner.setModel(new SpinnerNumberModel(2, 2, 10, 1));
@@ -202,7 +206,7 @@ public class Test {
 		JComboBox methodComboBox = new JComboBox();
 		methodComboBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				setMethod((String)methodComboBox.getSelectedItem());
+				setMethod((String)methodComboBox.getSelectedItem(), (int)equationsSpinner.getValue());
 			}
 		});
 		methodComboBox.setBackground(new Color(255, 255, 255));
@@ -228,7 +232,7 @@ public class Test {
 		
 		DigitsLabel = new JLabel("Digits");
 		DigitsLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		DigitsLabel.setBounds(348, 132, 50, 26);
+		DigitsLabel.setBounds(348, 132, 68, 26);
 		DigitsLabel.setVisible(true);
 		frame.getContentPane().add(DigitsLabel);
 		
@@ -261,11 +265,7 @@ public class Test {
 		frame.getContentPane().add(txtms);
 		txtms.setColumns(10);
 		
-		lblNewLabel_1 = new JLabel("Initial Guess");
-		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblNewLabel_1.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNewLabel_1.setBounds(20, 171, 198, 26);
-		frame.getContentPane().add(lblNewLabel_1);
+		setBoxes(2);
 		
 	}
 	
@@ -290,6 +290,7 @@ public class Test {
 				if(j < n) labels[i][j].setVisible(true);
 			}
 		}
+		if(StoppingConditionText.isVisible()) setInitialGuess(n);
 	}
 	//
 	private void setInitialGuess(int n) {
@@ -300,17 +301,19 @@ public class Test {
 				}
 					initialGuess_Label[i].setText("");
 					initialGuess_Label[i].setVisible(false);
+					lblNewLabel_1.setVisible(false);
 		}
 		for(int i = 0; i < n; i++) {
-				initialGuess[i].setVisible(true);
-				initialGuess_Label[i].setText("X" + String.valueOf(i + 1)+"=");
-				initialGuess_Label[i].setVisible(true);
+			lblNewLabel_1.setVisible(true);
+			initialGuess[i].setVisible(true);
+			initialGuess_Label[i].setText("X" + String.valueOf(i + 1)+"=");
+			initialGuess_Label[i].setVisible(true);
 			
 		}
 	}
 	//
 	
-	private void setMethod(String method) {
+	private void setMethod(String method, int n) {
 		LUText.setVisible(false);
 		LUComboBox.setVisible(false);
 		StoppingConditionText.setVisible(false);
@@ -319,6 +322,7 @@ public class Test {
 		IterationsNumberSpinner.setVisible(false);
 		ErrorText.setVisible(false);
 		ErrorTextField.setVisible(false);
+		setInitialGuess(0);
 		if(method == "LU Decomposition") {
 			LUText.setVisible(true);
 			LUComboBox.setVisible(true);
@@ -326,6 +330,7 @@ public class Test {
 		else if(method == "Gauss Seidel" || method == "Jacobi Iteration") {
 			StoppingConditionText.setVisible(true);
 			StoppingConditionComboBox.setVisible(true);
+			setInitialGuess(n);
 			setStoppingCondition((String)StoppingConditionComboBox.getSelectedItem());
 		}
 	}
