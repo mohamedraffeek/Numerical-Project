@@ -43,7 +43,7 @@ public class GaussSeidel {
     		if(i != 0) {
     			boolean LessThanRError = true;
     			for(int e=0 ; e<n ; e++) {
-    				if(Math.abs(ans[e]-temp[e]/ans[e]) < relativeE ){
+    				if(Math.abs((ans[e]-temp[e])/ans[e]) < relativeE ){
     					LessThanRError = true;
     				}else {
     					LessThanRError = false;

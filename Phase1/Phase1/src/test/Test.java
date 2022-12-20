@@ -129,7 +129,7 @@ public class Test {
 		
 		ErrorText = new JLabel("Choose the absolute relative error");
 		ErrorText.setFont(new Font("Tahoma", Font.BOLD, 14));
-		ErrorText.setBounds(847, 23, 242, 26);
+		ErrorText.setBounds(847, 23, 260, 26);
 		frame.getContentPane().add(ErrorText);
 		ErrorText.setVisible(false);
 		
@@ -143,7 +143,7 @@ public class Test {
 		
 		IterationsNumberText = new JLabel("Choose number of iterations");
 		IterationsNumberText.setFont(new Font("Tahoma", Font.BOLD, 14));
-		IterationsNumberText.setBounds(567, 23, 198, 26);
+		IterationsNumberText.setBounds(567, 23, 205, 26);
 		frame.getContentPane().add(IterationsNumberText);
 		IterationsNumberText.setVisible(false);
 		
@@ -249,17 +249,18 @@ public class Test {
 		
 		txtms = new JTextField();
 		txtms.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		txtms.setBounds(899, 135, 96, 19);
+		txtms.setBounds(900, 130, 96, 29);
 		frame.getContentPane().add(txtms);
 		txtms.setColumns(10);
 		
-		JLabel lblNewLabel_2 = new JLabel("Number of iterations done");
+		JLabel lblNewLabel_2 = new JLabel("Iterations done");
 		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblNewLabel_2.setBounds(1029, 131, 233, 26);
+		lblNewLabel_2.setBounds(1078, 131, 144, 26);
 		frame.getContentPane().add(lblNewLabel_2);
 		
 		iterationsDone = new JTextField();
-		iterationsDone.setBounds(1287, 135, 96, 19);
+		iterationsDone.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		iterationsDone.setBounds(1232, 130, 96, 29);
 		frame.getContentPane().add(iterationsDone);
 		iterationsDone.setColumns(10);
 		
@@ -370,7 +371,6 @@ public class Test {
 		t2 = System.currentTimeMillis() - t1;
 		if(method == "Gauss Seidel" || method == "Jacobi Iteration") {
 			iterationsDone.setText(Integer.toString(obj.Iterations()));
-			//System.out.println(Integer.toString(obj.Iterations()));
 		}
 		new Solution(ans);
 		txtms.setText(Double.toString(t2)+"ms");
