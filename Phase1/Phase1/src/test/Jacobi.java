@@ -27,19 +27,21 @@ public class Jacobi {
 		}
 	}
     
-    private double[] temp = new double[n];
+  
     public double[] solve() {
     	significantDigits();
-    	Arrays.fill(ans,0);
-    	Arrays.fill(temp,0);
-    	/*for(int i=0 ; i<n ;i++) {
-    		ans[i] =  precisionFinder.precision(Guess[i], significantDigits);
-    	}*/
-    	for(int i=0; i<1 ; i++) {
-    		temp = ans;
-    		for(int j=0 ; j<n-1 ;j++) {
-    			double sum = coef[j][n-1];
-    			for(int k=0 ; k<n-1 ; k++) {
+    	for(int i=0 ; i<n ;i++) {
+    		ans[i]= Guess[i];
+    		ans[i] =  precisionFinder.precision(ans[i], significantDigits);
+    	}
+    	for(int i=0; i<iterations ; i++) {
+    		double[] temp = new double[n];
+    		for(int f=0 ; f<n ; f++) {
+    			temp[f] = ans[f];
+    		}
+    		for(int j=0 ; j<n ;j++) {
+    			double sum = coef[j][n];
+    			for(int k=0 ; k<n ; k++) {
     				if(k!=j) {
     					sum-= coef[j][k]*temp[k];
     					sum = precisionFinder.precision(sum, significantDigits);

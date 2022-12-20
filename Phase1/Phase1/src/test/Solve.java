@@ -11,8 +11,9 @@ public class Solve {
 	double ans[];
 	int significantDigits;
 	double guess[];
+	int it;
 	
-	public Solve(String method, String LUType, double[][] coef, double[][] specialCoef, double[] b, int digits, double guess[]) {
+	public Solve(String method, String LUType, double[][] coef, double[][] specialCoef, double[] b, int digits, double guess[], int it) {
 		this.method = method;
 		this.LUType = LUType;
 		this.coef = coef;
@@ -20,6 +21,7 @@ public class Solve {
 		this.b = b;
 		this.significantDigits = digits;
 		this.guess = guess;
+		this.it = it;
 	}
 	
 	public double[] chooseMethod() {
@@ -54,12 +56,12 @@ public class Solve {
 				break;
 			}
 			case "Gauss Seidel" : {
-				GaussSeidel obj = new GaussSeidel(coef, 10, significantDigits);
+				GaussSeidel obj = new GaussSeidel(coef, it, significantDigits,guess);
 				ans = obj.solve();
 				break;
 			}
 			case "Jacobi Iteration" : {
-				Jacobi obj = new Jacobi(coef, 10, significantDigits,guess);
+				Jacobi obj = new Jacobi(coef, it, significantDigits,guess);
 				ans = obj.solve();
 				break;
 			}

@@ -7,14 +7,16 @@ public class GaussSeidel {
     int iterations;
     double[][] coef;
     double[] ans;
+    double[] Guess;
     precisionFinder precisionFinder = new precisionFinder();
     
-    public GaussSeidel(double[][] ceof , int iterations, int digits) {
+    public GaussSeidel(double[][] ceof , int iterations, int digits, double Guess[]) {
         this.coef = ceof;
         this.n = coef.length;
         this.significantDigits = digits;
         this.iterations = iterations;
         this.ans = new double[n];
+        this.Guess = Guess;
     }
     
     private void significantDigits() {
@@ -27,7 +29,10 @@ public class GaussSeidel {
     
     public double[] solve() {
     	significantDigits();
-    	Arrays.fill(ans,0);
+    	for(int i=0; i<n ; i++) {
+    		ans[i]=Guess[i];
+    		ans[i] = precisionFinder.precision(ans[i], significantDigits);
+    	}
     	for(int i=0; i<iterations ; i++) {
     		for(int j=0 ; j<n ;j++) {
     			double sum = coef[j][n];

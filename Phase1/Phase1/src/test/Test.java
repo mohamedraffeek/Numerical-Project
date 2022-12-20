@@ -29,6 +29,7 @@ public class Test {
 	double t1,t2;
 	private JLabel lblNewLabel_1;
 	double[] iGuess = new double[10];
+	int it ;
 
 	/**
 	 * Launch the application.
@@ -346,10 +347,12 @@ public class Test {
 	}
 	
 	private void solve(String method, int n, String LUType) {
+		t1 = System.currentTimeMillis();
 		if(method == "Gauss Seidel" || method == "Jacobi Iteration"){
 			for(int i=0 ; i<n ;i++) {
 				iGuess[i]= Double.parseDouble(initialGuess[i].getText());
 			}
+			it = (int)IterationsNumberSpinner.getValue();
 		}
 		double mat[][] = new double[n][n + 1];
 		double specialMat[][] = new double[n][n]; 
@@ -362,11 +365,10 @@ public class Test {
 				if(j == n) b[i] = Double.parseDouble(coef[i][j].getText()); 
 			}
 		}
-		t1 = System.currentTimeMillis();
-		Solve obj = new Solve(method, LUType, mat, specialMat, b, significantDigits,iGuess);
+		Solve obj = new Solve(method, LUType, mat, specialMat, b, significantDigits,iGuess, it);
 		double[] ans = obj.chooseMethod();
+		new Solution(ans);
 		t2 = System.currentTimeMillis() - t1;
 		txtms.setText(Double.toString(t2)+"ms");
-		new Solution(ans);
 	}
 }
