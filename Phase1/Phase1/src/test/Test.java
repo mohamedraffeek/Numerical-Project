@@ -358,10 +358,20 @@ public class Test {
 				validateMat[i][j] = coef[i][j].getText();
 			}
 		}
-		ValidateMatrix validateMatrix = new ValidateMatrix(validateMat);   //object of the class used to validate the matrix
+		ValidateMatrix validateMatrix;
+		if(method == "Gauss Seidel" || method == "Jacobi Iteration") {
+			 validateMatrix = new ValidateMatrix(validateMat,true);
+		}else {
+			 validateMatrix = new ValidateMatrix(validateMat,false);
+		}
+		//ValidateMatrix validateMatrix = new ValidateMatrix(validateMat);
 		validateMat = validateMatrix.validate();
 		if(validateMat[0][0].equalsIgnoreCase("Error")) {
-			Error errorWindow = new Error();
+			Error errorWindow = new Error("Error"); 
+			return;
+		}
+		if(validateMat[0][0].equalsIgnoreCase("Error1")) {
+			Error errorWindow = new Error("Error1"); 
 			return;
 		}
 		for(int i = 0; i < n; i++) {

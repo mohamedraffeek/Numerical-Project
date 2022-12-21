@@ -125,22 +125,6 @@ public class DoolittleLU {
         return ans;
     }
 
-    //Testing
-    /*public static void main(String[] args) {
-        DoolittleLU test;
-        double[][] testCoef = {
-                {25, 5, 1},
-                {64, 8, 1},
-                {144, 12, 1}
-        };
-        double[] testB = {
-                0, 0, 1
-        };
-        test = new DoolittleLU(testCoef, testB, true, 1e-6);
-        double[] testAns = test.Solve();
-        for(int i = 0; i < 3; ++i){
-            System.out.println(testAns[i]);
-        }
-    }*/
+    
 
 }
