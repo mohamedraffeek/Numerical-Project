@@ -44,10 +44,10 @@ public class ValidateMatrix {
 			for(int k = 0; k < n - 1; k++) {
 	            for(int i = k + 1; i < n; i++) {
 	                double multiplier = Double.parseDouble(mat[i][k]) / Double.parseDouble(mat[k][k]);
-	                multiplier = precisionFinder.precision(multiplier, 7);
+	                multiplier = precisionFinder.precision(multiplier, 10);
 	                for(int j = k; j < n + 1; j++) {
 	                	mat[i][j] = Double.toString(Double.parseDouble(mat[i][j]) - multiplier * Double.parseDouble(mat[k][j]));
-	                	mat[i][j] = Double.toString(precisionFinder.precision(Double.parseDouble(mat[i][j]), 7));
+	                	mat[i][j] = Double.toString(precisionFinder.precision(Double.parseDouble(mat[i][j]), 10));
 	                }
 	            }
 	        }

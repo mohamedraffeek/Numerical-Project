@@ -29,7 +29,8 @@ public class Solution {
 	}
 	
 	private void initialize() {
-		int x = 25, y = 65, width = 150, height = 35;
+		int x = 25, y = 65, width = 300, height = 35;
+		int x2 = 25, y2 = 105;
 		
 		frame = new JFrame();
 		frame.getContentPane().setBackground(new Color(193, 255, 255));
@@ -55,9 +56,14 @@ public class Solution {
 			String str = "X" + String.valueOf(i + 1) + " = " + String.valueOf(ans[i]);
 			results[i] = new JLabel(str);
 			results[i].setFont(new Font("Tahoma", Font.PLAIN, 15));
-			results[i].setBounds(x, y, width, height);
+			if(i>4) {
+				results[i].setBounds(x2, y2, width, height);
+				x2+= 300;
+			}else {
+				results[i].setBounds(x, y, width, height);
+			}
 			frame.getContentPane().add(results[i]);
-			x += 180;
+			x += 300; 
 		}
 	}
 
