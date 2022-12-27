@@ -338,19 +338,21 @@ public class Test {
 		}
 	}
 	
+	//the function executed when the solve button is pressed
 	private void solve(String method, int n, String LUType, boolean enableScaling) {
 		if(method == "Gauss Seidel" || method == "Jacobi Iteration"){
+			//getting initial guess inputs if the method is iterative
 			for(int i=0 ; i<n ;i++) {
 				iGuess[i]= Double.parseDouble(initialGuess[i].getText());
 			}
-			it = (int)IterationsNumberSpinner.getValue();
-			er = Double.parseDouble(ErrorTextField.getText());
+			it = (int)IterationsNumberSpinner.getValue();   //number of iterations that the user chose
+			er = Double.parseDouble(ErrorTextField.getText());    //absolute relative error that the user chose
 		}
-		double mat[][] = new double[n][n + 1];
-		double specialMat[][] = new double[n][n];
-		double b[] = new double[n];
-		String validateMat[][] = new String[n][n + 1];
-		int significantDigits = (int)PrecisionDigitsSpinner.getValue();
+		double mat[][] = new double[n][n + 1];    //preparing the coefficients matrix to be used in different methods
+		double specialMat[][] = new double[n][n];    //dividing the matrix to n * n coefficients and b vector
+		double b[] = new double[n];    //b vector
+		String validateMat[][] = new String[n][n + 1];    //used to validate that the matrix has no errors 
+		int significantDigits = (int)PrecisionDigitsSpinner.getValue();    //getting the significant digits that the user chose
 		for(int i = 0; i < n; i++) {
 			for(int j = 0; j < n + 1; j++) {
 				validateMat[i][j] = coef[i][j].getText();
@@ -380,13 +382,13 @@ public class Test {
 			}
 		}
 		Solve obj = new Solve(method, LUType, mat, specialMat, b, significantDigits,iGuess, it, er, enableScaling);
-		t1 = System.currentTimeMillis();
+		t1 = System.currentTimeMillis();   //start timer
 		double[] ans = obj.chooseMethod();
-		t2 = System.currentTimeMillis() - t1;
-		if(method == "Gauss Seidel" || method == "Jacobi Iteration") {
+		t2 = System.currentTimeMillis() - t1;   //end timer
+		if(method == "Gauss Seidel" || method == "Jacobi Iteration") {   //printing number of iterations done in iterative methods
 			iterationsDone.setText(Integer.toString(obj.Iterations()));
 		}
-		new Solution(ans);
-		txtms.setText(Double.toString(t2)+"ms");
+		new Solution(ans);   //viewing results in new window
+		txtms.setText(Double.toString(t2)+"ms");   //showing the runtime
 	}
 }
