@@ -11,7 +11,7 @@ import java.beans.PropertyChangeEvent;
 
 public class Test {
 
-	private JFrame frame;
+	private JFrame frame, phaseSelection, frame2;
 	private JTextField[][] coef = new JTextField[10][11];
 	private JLabel[][] labels = new JLabel[10][10];
 	//
@@ -19,12 +19,11 @@ public class Test {
 	private JLabel[] initialGuess_Label = new JLabel[10];
 	//
 	
-	private JTextField ErrorTextField;
-	private JLabel LUText, IterationsNumberText, ErrorText, PrecisionText, DigitsLabel, lblNewLabel_2;
+	private JTextField ErrorTextField, txtms, iterationsDone, equationField, epsilonField, lowerBoundField, upperBoundField, XiField, XiiField, initialField;
+	private JLabel LUText, IterationsNumberText, IterationsNumberText2, ErrorText, PrecisionText, PrecisionText2, DigitsLabel, DigitsLabel2, lblNewLabel_2, equationLabel, epsilon, lowerBound, upperBound, Xi, Xii, initial;
 	private JComboBox LUComboBox;
-	private JSpinner IterationsNumberSpinner, PrecisionDigitsSpinner;
-	private JButton button;
-	private JTextField txtms, iterationsDone;
+	private JSpinner IterationsNumberSpinner, IterationsNumberSpinner2, PrecisionDigitsSpinner, PrecisionDigitsSpinner2;
+	private JButton button, button2, phase1Button, phase2Button, backButton1, backButton2;
 	double t1,t2, er;
 	private JLabel lblNewLabel_1;
 	JCheckBox chckbxNewCheckBox;
@@ -40,7 +39,7 @@ public class Test {
 			public void run() {
 				try {
 					Test window = new Test();
-					window.frame.setVisible(true);
+					window.phaseSelection.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -59,14 +58,56 @@ public class Test {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		
+		phaseSelection = new JFrame();
+		phaseSelection.getContentPane().setBackground(new Color(193, 255, 255));
+		phaseSelection.getContentPane().setFont(new Font("Tahoma", Font.PLAIN, 11));
+		phaseSelection.setBounds(500, 275, 500, 250);
+		phaseSelection.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		phaseSelection.getContentPane().setLayout(null);
+		phaseSelection.setVisible(true);
+		
+		Cursor cursor = new Cursor(Cursor.HAND_CURSOR);
+		
+		phase1Button = new JButton("Phase One");
+		phase1Button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				phaseSelection.setVisible(false);
+				frame.setVisible(true);
+			}
+		});
+		phase1Button.setBackground(new Color(0, 128, 255));
+		phase1Button.setFont(new Font("Dialog", Font.BOLD, 20));
+		phase1Button.setCursor(cursor);
+		phase1Button.setBounds(75, 65, 138, 63);
+		phase1Button.setFocusable(false);
+		phaseSelection.getContentPane().add(phase1Button);
+		
+		phase2Button = new JButton("Phase Two");
+		phase2Button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				phaseSelection.setVisible(false);
+				frame2.setVisible(true);
+			}
+		});
+		phase2Button.setBackground(new Color(0, 128, 255));
+		phase2Button.setFont(new Font("Dialog", Font.BOLD, 20));
+		phase2Button.setCursor(cursor);
+		phase2Button.setBounds(275, 65, 138, 63);
+		phase2Button.setFocusable(false);
+		phaseSelection.getContentPane().add(phase2Button);
+		
+		//---------------------------------------------------------------------------------
+		
+		//phase one
+		
 		frame = new JFrame();
 		frame.getContentPane().setBackground(new Color(193, 255, 255));
 		frame.getContentPane().setFont(new Font("Tahoma", Font.PLAIN, 11));
 		frame.setBounds(0, 0, 1920, 1080);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		
-		Cursor cursor = new Cursor(Cursor.HAND_CURSOR);
+		frame.setVisible(false);
 		
 		for(int i = 0; i < 10; i++) {
 			x = 20;
@@ -246,7 +287,22 @@ public class Test {
 		button.setFont(new Font("Dialog", Font.BOLD, 30));
 		button.setCursor(cursor);
 		button.setBounds(1277, 11, 138, 63);
+		button.setFocusable(false);
 		frame.getContentPane().add(button);
+		
+		backButton1 = new JButton("Back");
+		backButton1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				phaseSelection.setVisible(true);
+				frame.setVisible(false);
+			}
+		});
+		backButton1.setBackground(new Color(0, 128, 255));
+		backButton1.setFont(new Font("Dialog", Font.BOLD, 20));
+		backButton1.setCursor(cursor);
+		backButton1.setBounds(1277, 180, 138, 63);
+		backButton1.setFocusable(false);
+		frame.getContentPane().add(backButton1);
 		
 		Canvas canvas = new Canvas();
 		canvas.setBackground(new Color(0, 0, 0));
@@ -267,6 +323,179 @@ public class Test {
 		
 		setBoxes(2);
 		
+		//---------------------------------------------------------------------------------
+		
+		//phase two
+		
+		frame2 = new JFrame();
+		frame2.getContentPane().setBackground(new Color(193, 255, 255));
+		frame2.getContentPane().setFont(new Font("Tahoma", Font.PLAIN, 11));
+		frame2.setBounds(0, 0, 1920, 1080);
+		frame2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame2.getContentPane().setLayout(null);
+		frame2.setVisible(false);
+		
+		backButton2 = new JButton("Back");
+		backButton2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				phaseSelection.setVisible(true);
+				frame2.setVisible(false);
+			}
+		});
+		backButton2.setBackground(new Color(0, 128, 255));
+		backButton2.setFont(new Font("Dialog", Font.BOLD, 20));
+		backButton2.setCursor(cursor);
+		backButton2.setBounds(1277, 180, 138, 63);
+		backButton2.setFocusable(false);
+		frame2.getContentPane().add(backButton2);
+		
+		equationLabel = new JLabel("Enter the equation");
+		equationLabel.setFont(new Font("Tahoma", Font.BOLD, 14));
+		equationLabel.setBounds(20, 45, 140, 26);
+		frame2.getContentPane().add(equationLabel);
+		
+		equationField = new JTextField();
+		equationField.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		equationField.setBounds(165, 45, 500, 26);
+		frame2.getContentPane().add(equationField);
+		
+		JLabel methodText2 = new JLabel("Choose solving method");
+		methodText2.setFont(new Font("Tahoma", Font.BOLD, 14));
+		methodText2.setBounds(793, 23, 198, 26);
+		frame2.getContentPane().add(methodText2);
+		
+		JComboBox methodComboBox2 = new JComboBox();
+		methodComboBox2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setMethod2((String)methodComboBox2.getSelectedItem());
+			}
+		});
+		methodComboBox2.setBackground(new Color(255, 255, 255));
+		methodComboBox2.setCursor(cursor);
+		methodComboBox2.setFont(new Font("Segoe UI", Font.BOLD, 16));
+		methodComboBox2.setModel(new DefaultComboBoxModel(new String[] {"Bisection", "False-Position", "Fixed Point", "Newton-Raphson", "Secant"}));
+		methodComboBox2.setSelectedIndex(0);
+		methodComboBox2.setBounds(793, 45, 242, 26);
+		frame2.getContentPane().add(methodComboBox2);
+		
+		PrecisionText2 = new JLabel("Choose the Precision");
+		PrecisionText2.setFont(new Font("Tahoma", Font.BOLD, 14));
+		PrecisionText2.setBounds(514, 109, 242, 26);
+		frame2.getContentPane().add(PrecisionText2);
+		
+		PrecisionDigitsSpinner2 = new JSpinner();
+		PrecisionDigitsSpinner2.setModel(new SpinnerNumberModel(1, 1, 16, 1));
+		PrecisionDigitsSpinner2.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		PrecisionDigitsSpinner2.setBounds(514, 132, 50, 26);
+		frame2.getContentPane().add(PrecisionDigitsSpinner2);
+		
+		DigitsLabel2 = new JLabel("Digits");
+		DigitsLabel2.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		DigitsLabel2.setBounds(574, 131, 68, 26);
+		DigitsLabel2.setVisible(true);
+		frame2.getContentPane().add(DigitsLabel2);
+		
+		button2 = new JButton("Solve");
+		button2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//to be implemented
+			}
+		});
+		button2.setBackground(new Color(0, 128, 255));
+		button2.setFont(new Font("Dialog", Font.BOLD, 30));
+		button2.setCursor(cursor);
+		button2.setBounds(1277, 11, 138, 63);
+		button2.setFocusable(false);
+		frame2.getContentPane().add(button2);
+		
+		epsilon = new JLabel("Epsilon");
+		epsilon.setFont(new Font("Tahoma", Font.BOLD, 14));
+		epsilon.setBounds(50, 109, 68, 26);
+		frame2.getContentPane().add(epsilon);
+		
+		epsilonField = new JTextField();
+		epsilonField.setHorizontalAlignment(SwingConstants.RIGHT);
+		epsilonField.setText("0.0001");
+		epsilonField.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		epsilonField.setBounds(50, 131, 120, 26);
+		frame2.getContentPane().add(epsilonField);
+		
+		IterationsNumberText2 = new JLabel("Choose number of iterations");
+		IterationsNumberText2.setFont(new Font("Tahoma", Font.BOLD, 14));
+		IterationsNumberText2.setBounds(250, 109, 250, 26);
+		frame2.getContentPane().add(IterationsNumberText2);
+		
+		IterationsNumberSpinner2 = new JSpinner();
+		IterationsNumberSpinner2.setModel(new SpinnerNumberModel(1, 1, 100, 1));
+		IterationsNumberSpinner2.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		IterationsNumberSpinner2.setBounds(250, 131, 68, 26);
+		frame2.getContentPane().add(IterationsNumberSpinner2);
+		
+		lowerBound = new JLabel("Lower Bound");
+		lowerBound.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lowerBound.setBounds(750, 109, 100, 26);
+		frame2.getContentPane().add(lowerBound);
+		
+		lowerBoundField = new JTextField();
+		lowerBoundField.setHorizontalAlignment(SwingConstants.RIGHT);
+		lowerBoundField.setText("0");
+		lowerBoundField.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lowerBoundField.setBounds(750, 131, 120, 26);
+		frame2.getContentPane().add(lowerBoundField);
+		
+		upperBound = new JLabel("Upper Bound");
+		upperBound.setFont(new Font("Tahoma", Font.BOLD, 14));
+		upperBound.setBounds(950, 109, 100, 26);
+		frame2.getContentPane().add(upperBound);
+		
+		upperBoundField = new JTextField();
+		upperBoundField.setHorizontalAlignment(SwingConstants.RIGHT);
+		upperBoundField.setText("1");
+		upperBoundField.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		upperBoundField.setBounds(950, 131, 120, 26);
+		frame2.getContentPane().add(upperBoundField);
+		
+		Xii = new JLabel("Xi-1");
+		Xii.setFont(new Font("Tahoma", Font.BOLD, 14));
+		Xii.setBounds(750, 109, 100, 26);
+		frame2.getContentPane().add(Xii);
+		Xii.setVisible(false);
+		
+		XiiField = new JTextField();
+		XiiField.setHorizontalAlignment(SwingConstants.RIGHT);
+		XiiField.setText("0");
+		XiiField.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		XiiField.setBounds(750, 131, 120, 26);
+		frame2.getContentPane().add(XiiField);
+		XiiField.setVisible(false);
+		
+		Xi = new JLabel("Xi");
+		Xi.setFont(new Font("Tahoma", Font.BOLD, 14));
+		Xi.setBounds(950, 109, 100, 26);
+		frame2.getContentPane().add(Xi);
+		Xi.setVisible(false);
+		
+		XiField = new JTextField();
+		XiField.setHorizontalAlignment(SwingConstants.RIGHT);
+		XiField.setText("1");
+		XiField.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		XiField.setBounds(950, 131, 120, 26);
+		frame2.getContentPane().add(XiField);
+		XiField.setVisible(false);
+		
+		initial = new JLabel("Initial Guess");
+		initial.setFont(new Font("Tahoma", Font.BOLD, 14));
+		initial.setBounds(850, 109, 100, 26);
+		frame2.getContentPane().add(initial);
+		initial.setVisible(false);
+		
+		initialField = new JTextField();
+		initialField.setHorizontalAlignment(SwingConstants.RIGHT);
+		initialField.setText("0");
+		initialField.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		initialField.setBounds(850, 131, 120, 26);
+		frame2.getContentPane().add(initialField);
+		initialField.setVisible(false);
 	}
 	
 	private void setBoxes(int n) {
@@ -335,6 +564,36 @@ public class Test {
 			ErrorTextField.setVisible(true);
 			lblNewLabel_2.setVisible(true);
 			iterationsDone.setVisible(true);
+		}
+	}
+	
+	private void setMethod2(String method) {
+		try {
+			lowerBound.setVisible(false);
+			lowerBoundField.setVisible(false);
+			upperBound.setVisible(false);
+			upperBoundField.setVisible(false);
+			Xi.setVisible(false);
+			XiField.setVisible(false);
+			Xii.setVisible(false);
+			XiiField.setVisible(false);
+			initial.setVisible(false);
+			initialField.setVisible(false);
+			if(method == "Bisection" || method == "False-Position") {
+				lowerBound.setVisible(true);
+				lowerBoundField.setVisible(true);
+				upperBound.setVisible(true);
+				upperBoundField.setVisible(true);
+			}else if(method == "Secant") {
+				Xi.setVisible(true);
+				XiField.setVisible(true);
+				Xii.setVisible(true);
+				XiiField.setVisible(true);
+			}else if(method == "Newton-Raphson" || method == "Fixed Point") {
+				initial.setVisible(true);
+				initialField.setVisible(true);
+			}
+		} catch (NullPointerException e) {
 		}
 	}
 	
